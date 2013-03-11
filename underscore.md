@@ -17,7 +17,7 @@ underscore的源代码总体:
 			}
 	)).call(this)
 	
-对underscore源码细节的研究
+##### 对underscore源码细节的研究 #####
 
     var _ = function(obj) {
     if (obj instanceof _) return obj;
