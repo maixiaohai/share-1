@@ -142,6 +142,22 @@ mixin和chain的实现
 
     _.mixin(_);
 
+    _.extend(_.prototype, {
+
+    // Start chaining a wrapped Underscore object.
+    chain: function() {
+      this._chain = true;
+      return this;
+    },
+
+    // Extracts the result from a wrapped and chained object.
+    value: function() {
+      return this._wrapped;
+    }
+
+    });
+
+
 
 first initial last rest: The **guard** check allows it to work with `_.map`.
 
