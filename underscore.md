@@ -64,3 +64,80 @@ js中没有判断一个属性是否存在的方法， 所以用到了+, 通过�
 
 在each函数中， breaker的使用似乎是多余的， 但是在后面的函数some中会调用each， 此时breaker会有作用
 
+    // Save the previous value of the `_` variable.
+    var previousUnderscore = root._;
+
+      _.noConflict = function() {
+    root._ = previousUnderscore;
+    return this;
+    };
+
+下面这个例子运用递归：
+
+    // Internal implementation of a recursive `flatten` function.
+    var flatten = function(input, shallow, output) {
+    each(input, function(value) {
+      if (_.isArray(value)) {
+        shallow ? push.apply(output, value) : flatten(value, shallow, output);
+      } else {
+        output.push(value);
+      }
+    });
+    return output;
+    };
+
+
+bind:
+    
+	_.bind = function(func, context) {
+    var args, bound;
+    if (func.bind === nativeBind && nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
+    if (!_.isFunction(func)) throw new TypeError;
+    args = slice.call(arguments, 2);
+    return bound = function() {
+      if (!(this instanceof bound)) return func.apply(context, args.concat(slice.call(arguments)));
+      ctor.prototype = func.prototype;
+      var self = new ctor;
+      ctor.prototype = null;
+      var result = func.apply(self, args.concat(slice.call(arguments)));
+      if (Object(result) === result) return result;
+      return self;
+    };
+    };
+
+return bound = function(){}
+返回一个函数，用到了闭包， 改函数内部的arguments是指本函数的
+
+
+    _.wrap = function(func, wrapper) {
+    return function() {
+      var args = [func];
+      push.apply(args, arguments);
+      return wrapper.apply(this, args);
+    };
+    };
+
+类似于数学中的f(g()).
+
+mixin和chain的实现
+
+    _.mixin = function(obj) {
+     each(_.functions(obj), function(name){
+      var func = _[name] = obj[name];
+      _.prototype[name] = function() {
+        var args = [this._wrapped];
+        push.apply(args, arguments);
+        return result.call(this, func.apply(_, args));
+      };
+    });
+    };
+
+    _.chain = function(obj) {
+    return _(obj).chain();
+    };
+
+    var result = function(obj) {
+    return this._chain ? _(obj).chain() : obj;
+    };
+
+    _.mixin(_);
