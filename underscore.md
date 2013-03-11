@@ -10,12 +10,12 @@ underscore的源代码总体:
 有两个重点： closure and call function
 
     (function(obj){
-	    var _ = new Object();
-		this._ = _;
-		_.funcA = function(){
-		    console.log(this);
-			}
-	)).call(this)
+	  var _ = new Object();
+	    this._ = _;
+		_.func = function(){
+		      console.log(this);
+	    }				
+	}).call(this);
 	
 ##### 对underscore源码细节的研究 #####
 
