@@ -1,7 +1,7 @@
 ### emacs配置 ###
 
 ##### python开发环境配置 #####
-
+    ;;base
     ;;show line number
     (require 'linum)
     (global-linum-mode t)
